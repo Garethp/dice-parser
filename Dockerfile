@@ -3,6 +3,7 @@ FROM node
 WORKDIR /usr/src/app
 
 COPY package.json .
+COPY package-lock.json .
 COPY README.md .
 COPY tsconfig.json .
 ADD src ./src

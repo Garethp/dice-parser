@@ -7,12 +7,12 @@ import {
 import config from "./config";
 
 import { GURPS, NotePassing, Par, ShadowRun } from "./commands";
-
 const { intents, token, clientId } = config;
-
 const rest = new REST({ version: "10" }).setToken(token);
-
 const allCommands = [GURPS, ShadowRun, NotePassing, Par];
+
+if (!process.env.DISCORD_TOKEN)
+    throw new Error("You need to set the DISCORD_TOKEN environment variable");
 
 (async () => {
     try {

@@ -88,7 +88,7 @@ export const ShadowRun: Command = {
 };
 
 export const RoleMaster: Command = {
-  keyword: "d",
+  keyword: "rolemaster",
   description: "Roll with a D100 with a modifier",
   optionsBuilder: (builder) =>
     builder.addStringOption((option) =>
@@ -243,3 +243,31 @@ export const Par: Command = {
     );
   },
 };
+
+export const Roll: Command = {
+  keyword: "roll",
+  description: "The default dice roller",
+  optionsBuilder: (builder) =>
+    builder.addStringOption((option) =>
+      option
+        .setName("input")
+        .setDescription("The dice command to roll (Example: 3d6)")
+        .setRequired(true)
+    ),
+  handler: async (interaction) => {
+    const input = interaction.options.getString("input") ?? "";
+
+    const roll = diceRoller.roll(input);
+    return await interaction.reply(renderer.render(input, roll));
+  },
+};
+
+export const allCommands: Command[] = [
+  Roll,
+  GURPS,
+  ShadowRun,
+  RoleMaster,
+  NotePassing,
+  Par,
+  { ...RoleMaster, keyword: "d" },
+];

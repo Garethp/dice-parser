@@ -1,10 +1,9 @@
 import { Client, REST, Routes, SlashCommandBuilder } from "discord.js";
 import config from "./config";
 
-import { GURPS, NotePassing, Par, RoleMaster, ShadowRun } from "./commands";
+import { allCommands } from "./commands";
 const { intents, token, clientId } = config;
 const rest = new REST({ version: "10" }).setToken(token);
-const allCommands = [GURPS, ShadowRun, RoleMaster, NotePassing, Par];
 
 if (!process.env.DISCORD_TOKEN)
   throw new Error("You need to set the DISCORD_TOKEN environment variable");

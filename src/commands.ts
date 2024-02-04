@@ -266,7 +266,7 @@ export const allCommands: Command[] = [
   Roll,
   GURPS,
   ShadowRun,
-  // RoleMaster,
+  RoleMaster,
   NotePassing,
   Par,
   { ...RoleMaster, keyword: "d" },

@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: dice-parser-bot
     build: .
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}

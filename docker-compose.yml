@@ -2,6 +2,7 @@ services:
   app:
     container_name: dice-parser-bot
     build: .
+    pull_policy: build
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
 

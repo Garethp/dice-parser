@@ -1,4 +1,6 @@
 services:
   app:
     build: .
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
 

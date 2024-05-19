@@ -98,18 +98,18 @@ export const RoleMaster: Command = {
         .setRequired(false)
     ),
   handler: async (interaction) => {
-    const input = interaction.options.getString("input") ?? "0";
+    const input = interaction.options.getString("input") || "0";
 
-    if (!!input.match(/[^0-9-]/))
+    if (!!input.match(/[^0-9-+]/))
       return await interaction.reply({
         content: "The modifier you entered is not a number",
         ephemeral: true,
       });
 
-    const inputNum = parseInt(input.trim());
+    const inputNum = input.trim().replace(/^\+/, "");
     const roll = diceRoller.roll(`1d100!>95+${inputNum}`);
 
-    return await interaction.reply(renderer.render(`1d100+${inputNum}`, roll));
+    return await interaction.reply(renderer.render(`1d100+${input}`, roll));
   },
 };
 

@@ -4,7 +4,7 @@ import {
   ThreadAutoArchiveDuration,
   ChatInputCommandInteraction,
 } from "discord.js";
-import { DiceRoller } from "dice-roller-parser";
+import { DiceRoller, DiceRollResult } from "dice-roller-parser";
 import { DiscordRollRenderer } from "./renderer";
 
 const diceRoller = new DiceRoller();
@@ -110,6 +110,53 @@ export const RoleMaster: Command = {
     const roll = diceRoller.roll(`1d100!>95+${inputNum}`);
 
     return await interaction.reply(renderer.render(`1d100+${input}`, roll));
+  },
+};
+
+export const ScumAndVillainy: Command = {
+  keyword: "scum",
+  description:
+    "Roll a number of d6 for Scum and Villainy. Returns the highest number rolled",
+  optionsBuilder: (builder) =>
+    builder.addStringOption((option) =>
+      option
+        .setName("input")
+        .setDescription("The number of d6 to roll")
+        .setRequired(true)
+    ),
+  handler: async (interaction) => {
+    // Get the number of d6 to roll from the input, return an error if it's not a number. Roll that many d6 and return the highest number rolled
+    const input = interaction.options.getString("input") ?? "";
+
+    if (!!input.match(/[^0-9-+]/))
+      return await interaction.reply({
+        content: "The modifier you entered is not a number",
+        ephemeral: true,
+      });
+
+    const inputNum = input.trim().replace(/^\+/, "");
+    const roll = diceRoller.roll(`${inputNum}d6`) as DiceRollResult;
+
+    const values = roll.rolls.map((roll) => roll.roll);
+    const result = Math.max(...values);
+    let status = "";
+
+    if (result <= 3) {
+      status = "Bad Outcome:";
+    } else if (result <= 5) {
+      status = "Partial Success:";
+    } else {
+      status =
+        values.filter((x) => x === 6).length > 1
+          ? "Critical Success:"
+          : "Full Success:";
+    }
+
+    roll.value = result;
+
+    return await interaction.reply(
+      renderer.render(`${status} ${inputNum}d6`, roll)
+    );
   },
 };
 
@@ -269,5 +316,6 @@ export const allCommands: Command[] = [
   RoleMaster,
   NotePassing,
   Par,
-  { ...RoleMaster, keyword: "d" },
+  ScumAndVillainy,
+  { ...ScumAndVillainy, keyword: "d" },
 ];

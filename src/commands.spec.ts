@@ -151,6 +151,61 @@ describe("Scum and Villainy Roller", () => {
       expect.stringContaining("Critical Success:")
     );
   });
+
+  it.each([0, -1])(
+    "should take the lowest of two dice when rolling with a %s",
+    async (diceValue) => {
+      const roll = roller.roll("2d6") as DiceRollResult;
+      rollSpy.mockImplementationOnce(() => ({
+        ...roll,
+        rolls: [
+          {
+            ...roll.rolls[0],
+            roll: 1,
+          },
+          {
+            ...roll.rolls[1],
+            roll: 6,
+          },
+        ],
+      }));
+
+      jest
+        .spyOn(mockOptionResolver, "getString")
+        .mockReturnValue(`${diceValue}`);
+
+      ScumAndVillainy.handler(mockInteraction as ChatInputCommandInteraction);
+
+      expect(mockInteraction.reply).toHaveBeenCalledWith(
+        expect.stringContaining("Bad Outcome:")
+      );
+    }
+  );
+
+  it("should not let you roll a critical success with negative dice", async () => {
+    const roll = roller.roll("2d6") as DiceRollResult;
+    rollSpy.mockImplementationOnce(() => ({
+      ...roll,
+      rolls: [
+        {
+          ...roll.rolls[0],
+          roll: 6,
+        },
+        {
+          ...roll.rolls[1],
+          roll: 6,
+        },
+      ],
+    }));
+
+    jest.spyOn(mockOptionResolver, "getString").mockReturnValue(`0`);
+
+    ScumAndVillainy.handler(mockInteraction as ChatInputCommandInteraction);
+
+    expect(mockInteraction.reply).toHaveBeenCalledWith(
+      expect.stringContaining("Full Success:")
+    );
+  });
 });
 
 describe("RoleMaster roller", () => {

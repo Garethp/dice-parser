@@ -128,18 +128,25 @@ export const ScumAndVillainy: Command = {
     // Get the number of d6 to roll from the input, return an error if it's not a number. Roll that many d6 and return the highest number rolled
     const input = interaction.options.getString("input") ?? "";
 
-    if (!!input.match(/[^0-9-+]/))
+    if (!!input.match(/[^\-0-9]/))
       return await interaction.reply({
         content: "The modifier you entered is not a number",
         ephemeral: true,
       });
 
-    const inputNum = input.trim().replace(/^\+/, "");
+    let negative = false;
+
+    let inputNum = input.trim().replace(/^\+/, "");
+    if (parseInt(inputNum) < 1) {
+      negative = true;
+      inputNum = "2";
+    }
+
     const roll = diceRoller.roll(`${inputNum}d6`) as DiceRollResult;
 
     const values = roll.rolls.map((roll) => roll.roll);
-    const result = Math.max(...values);
-    let status = "";
+    const result = !negative ? Math.max(...values) : Math.min(...values);
+    let status;
 
     if (result <= 3) {
       status = "Bad Outcome:";
@@ -147,7 +154,7 @@ export const ScumAndVillainy: Command = {
       status = "Partial Success:";
     } else {
       status =
-        values.filter((x) => x === 6).length > 1
+        values.filter((x) => x === 6).length > 1 && !negative
           ? "Critical Success:"
           : "Full Success:";
     }

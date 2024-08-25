@@ -319,6 +319,8 @@ export const DCCCharacter: Command = {
 
     const luckRoll = diceRoller.roll(`1d30`) as DiceRollResult;
 
+    const occupationRoll = diceRoller.roll(`1d100`) as DiceRollResult;
+
     return await interaction.reply(`
     **Ability Scores**\r\n
     ${abilityScores
@@ -328,7 +330,8 @@ export const DCCCharacter: Command = {
       )
       .join("\r\n")}
     \r\n
-    **Luck**: ${luckRoll.value} (${luckRoll.rolls.join(", ")})
+    **Luck**: ${luckRoll.value} (${luckRoll.rolls.join(", ")})\r\n
+    **Occupation**: ${occupationRoll.value} (${occupationRoll.rolls.join(", ")})
   `);
   },
 };

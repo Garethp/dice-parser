@@ -312,9 +312,28 @@ export const DCCCharacter: Command = {
       "Intelligence",
     ];
 
+    const modifierTable: Record<string, number> = {
+      "3": -3,
+      "4": -2,
+      "5": -2,
+      "6": -1,
+      "7": -1,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 1,
+      "14": 1,
+      "15": 1,
+      "16": 2,
+      "17": 2,
+      "18": 3,
+    };
+
     const abilityScores = skills.map((skill) => {
       const roll = diceRoller.roll(`3d6`) as DiceRollResult;
-      return { skill, roll };
+      return { skill, roll, modifier: modifierTable[`${roll.value}`] };
     });
 
     const luckRoll = diceRoller.roll(`1d30`) as DiceRollResult;
@@ -323,7 +342,7 @@ export const DCCCharacter: Command = {
 
     return await interaction.reply(`
     **Ability Scores**\r\n
-    ${abilityScores
+    \`\`\`md${abilityScores
       .map(
         ({ skill, roll }) =>
           `${skill}: ${roll.value} (${roll.rolls
@@ -331,13 +350,13 @@ export const DCCCharacter: Command = {
             .join(", ")})`
       )
       .join("\r\n")}
-    \r\n
-    **Luck**: ${luckRoll.value} (${luckRoll.rolls
+    \`\`\`
+**Luck**: \`${luckRoll.value} (${luckRoll.rolls
       .map((roll) => roll.value)
-      .join(", ")})\r\n
-    **Occupation**: ${occupationRoll.value} (${occupationRoll.rolls
+      .join(", ")})\`\r\n
+**Occupation**: \`${occupationRoll.value} (${occupationRoll.rolls
       .map((roll) => roll.value)
-      .join(", ")})
+      .join(", ")})\`
   `);
   },
 };

@@ -298,6 +298,37 @@ export const Par: Command = {
   },
 };
 
+export const DCCCharacter: Command = {
+  keyword: "dccChargen",
+  description: "Generate a DCC character",
+  optionsBuilder: (builder) => builder,
+  handler: async (interaction) => {
+    const skills = [
+      "Strength",
+      "Agility",
+      "Stamina",
+      "Personality",
+      "Luck",
+      "Intelligence",
+    ];
+
+    const abilityScores = skills.map((skill) => {
+      const roll = diceRoller.roll(`3d6`) as DiceRollResult;
+      return { skill, roll };
+    });
+
+    return await interaction.reply(`
+    **Ability Scores**
+    ${abilityScores
+      .map(
+        ({ skill, roll }) =>
+          `${skill}: ${roll.value} (${roll.rolls.join(", ")})`
+      )
+      .join("\n")}
+  `);
+  },
+};
+
 export const Roll: Command = {
   keyword: "roll",
   description: "The default dice roller",
@@ -324,5 +355,6 @@ export const allCommands: Command[] = [
   NotePassing,
   Par,
   ScumAndVillainy,
+  DCCCharacter,
   { ...ScumAndVillainy, keyword: "d" },
 ];

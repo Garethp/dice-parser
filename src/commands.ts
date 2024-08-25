@@ -336,6 +336,11 @@ export const DCCCharacter: Command = {
       return { skill, roll, modifier: modifierTable[`${roll.value}`] };
     });
 
+    const hp = diceRoller.roll(
+      // @ts-ignore
+      `1d4+${abilityScores["Stamina"]}`
+    ) as DiceRollResult;
+
     const luckRoll = diceRoller.roll(`1d30`) as DiceRollResult;
 
     const occupationRoll = diceRoller.roll(`1d100`) as DiceRollResult;
@@ -363,6 +368,7 @@ ${abilityScores
         .join(", ")})`
   )
   .join("\r\n")}\`\`\`
+**HP**: \`${Math.max(hp.value, 1)} (${hp.value})\`
 **Luck**: \`${luckRoll.value} (${luckRoll.rolls
       .map((roll) => roll.value)
       .join(", ")})\`

@@ -326,12 +326,18 @@ export const DCCCharacter: Command = {
     ${abilityScores
       .map(
         ({ skill, roll }) =>
-          `${skill}: ${roll.value} (${roll.rolls.join(", ")})`
+          `${skill}: ${roll.value} (${roll.rolls
+            .map((roll) => roll.roll)
+            .join(", ")})`
       )
       .join("\r\n")}
     \r\n
-    **Luck**: ${luckRoll.value} (${luckRoll.rolls.join(", ")})\r\n
-    **Occupation**: ${occupationRoll.value} (${occupationRoll.rolls.join(", ")})
+    **Luck**: ${luckRoll.value} (${luckRoll.rolls
+      .map((roll) => roll.value)
+      .join(", ")})\r\n
+    **Occupation**: ${occupationRoll.value} (${occupationRoll.rolls
+      .map((roll) => roll.value)
+      .join(", ")})
   `);
   },
 };

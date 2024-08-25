@@ -341,21 +341,21 @@ export const DCCCharacter: Command = {
     const occupationRoll = diceRoller.roll(`1d100`) as DiceRollResult;
 
     return await interaction.reply(`
-    **Ability Scores**\r\n
-    \`\`\`md${abilityScores
-      .map(
-        ({ skill, roll, modifier }) =>
-          `${skill}: Score (${
-            roll.value
-          }), Modifiers (${modifier}), Die (${roll.rolls
-            .map((roll) => roll.roll)
-            .join(", ")})`
-      )
-      .join("\r\n")}
-    \`\`\`
+**Ability Scores**
+\`\`\`md
+${abilityScores
+  .map(
+    ({ skill, roll, modifier }) =>
+      `${skill}: Score (${
+        roll.value
+      }), Modifiers (${modifier}), Die (${roll.rolls
+        .map((roll) => roll.roll)
+        .join(", ")})`
+  )
+  .join("\r\n")}\`\`\`
 **Luck**: \`${luckRoll.value} (${luckRoll.rolls
       .map((roll) => roll.value)
-      .join(", ")})\`\r\n
+      .join(", ")})\`
 **Occupation**: \`${occupationRoll.value} (${occupationRoll.rolls
       .map((roll) => roll.value)
       .join(", ")})\`

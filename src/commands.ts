@@ -317,14 +317,18 @@ export const DCCCharacter: Command = {
       return { skill, roll };
     });
 
+    const luckRoll = diceRoller.roll(`1d30`) as DiceRollResult;
+
     return await interaction.reply(`
-    **Ability Scores**
+    **Ability Scores**\r\n
     ${abilityScores
       .map(
         ({ skill, roll }) =>
           `${skill}: ${roll.value} (${roll.rolls.join(", ")})`
       )
-      .join("\n")}
+      .join("\r\n")}
+    \r\n
+    **Luck**: ${luckRoll.value} (${luckRoll.rolls.join(", ")})
   `);
   },
 };

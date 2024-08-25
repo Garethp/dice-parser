@@ -340,6 +340,16 @@ export const DCCCharacter: Command = {
 
     const occupationRoll = diceRoller.roll(`1d100`) as DiceRollResult;
 
+    const vatThingTrait = diceRoller.roll(`1d6`) as DiceRollResult;
+
+    const vatThingFlaw = diceRoller.roll(`1d30`) as DiceRollResult;
+
+    const animusRoll = diceRoller.roll(`1d30`) as DiceRollResult;
+
+    const freeItemRoll = diceRoller.roll(`1d24`) as DiceRollResult;
+
+    const curioRoll = diceRoller.roll(`1d100`) as DiceRollResult;
+
     return await interaction.reply(`
 **Ability Scores**
 \`\`\`md
@@ -358,7 +368,16 @@ ${abilityScores
       .join(", ")})\`
 **Occupation**: \`${occupationRoll.value} (${occupationRoll.rolls
       .map((roll) => roll.value)
-      .join(", ")})\`
+      .join(", ")})\`,
+**Vat Thing Trait (If applicable)**: \`${vatThingTrait.value} (${
+      vatThingTrait.value
+    })\`
+**Vat Thing Flaw (If applicable)**: \`${vatThingFlaw.value} (${
+      vatThingFlaw.value
+    })\`
+**Animus**: \`${animusRoll.value} (${animusRoll.value})\`
+**Free Item**: \`${freeItemRoll.value} (${freeItemRoll.value})\`
+**Curio**: \`${curioRoll.value} (${curioRoll.value})\`
   `);
   },
 };

@@ -355,6 +355,8 @@ export const DCCCharacter: Command = {
 
     const curioRoll = diceRoller.roll(`1d100`) as DiceRollResult;
 
+    const copper = diceRoller.roll(`5d12`) as DiceRollResult;
+
     return await interaction.reply(`
 **Ability Scores**
 \`\`\`md
@@ -384,6 +386,9 @@ ${abilityScores
 **Animus**: \`${animusRoll.value} (${animusRoll.value})\`
 **Free Item**: \`${freeItemRoll.value} (${freeItemRoll.value})\`
 **Curio**: \`${curioRoll.value} (${curioRoll.value})\`
+**Copper**: \`${copper.value} (${copper.rolls
+      .map((roll) => roll.roll)
+      .join(", ")})\`
   `);
   },
 };

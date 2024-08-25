@@ -299,7 +299,7 @@ export const Par: Command = {
 };
 
 export const DCCCharacter: Command = {
-  keyword: "dccChargen",
+  keyword: "dccchargen",
   description: "Generate a DCC character",
   optionsBuilder: (builder) => builder,
   handler: async (interaction) => {

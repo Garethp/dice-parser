@@ -344,8 +344,10 @@ export const DCCCharacter: Command = {
     **Ability Scores**\r\n
     \`\`\`md${abilityScores
       .map(
-        ({ skill, roll }) =>
-          `${skill}: ${roll.value} (${roll.rolls
+        ({ skill, roll, modifier }) =>
+          `${skill}: Score (${
+            roll.value
+          }), Modifiers (${modifier}), Die (${roll.rolls
             .map((roll) => roll.roll)
             .join(", ")})`
       )
